@@ -29,9 +29,14 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/common/components/ui/toggle-group"
-import mockPriceData from "@/mockPriceData.json"
+import type { Token, PriceData } from '@/lib/api-client'
 
 export const description = "An interactive price chart"
+
+interface ChartAreaInteractiveProps {
+  token?: Token;
+  priceData?: PriceData[];
+}
 
 const chartConfig = {
   price: {
@@ -40,7 +45,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function ChartAreaInteractive() {
+export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveProps = {}) {
   const isMobile = useIsMobile()
   const [timeRange, setTimeRange] = React.useState("all")
 
@@ -51,12 +56,14 @@ export function ChartAreaInteractive() {
   }, [isMobile])
 
   const chartData = React.useMemo(() => {
-    return mockPriceData.prices.map((item, index) => ({
+    // Use passed priceData or fall back to empty array for backwards compatibility
+    const prices = priceData || [];
+    return prices.map((item, index) => ({
       date: new Date(item.timestamp * 1000).toISOString(),
       price: item.price,
       index: index,
     }))
-  }, [])
+  }, [priceData])
 
   const filteredData = React.useMemo(() => {
     if (timeRange === "all") {
@@ -75,7 +82,7 @@ export function ChartAreaInteractive() {
   return (
     <Card className="@container/card">
       <CardHeader>
-        <CardTitle>Price History</CardTitle>
+        <CardTitle>{token ? `${token.symbol} Price History` : 'Price History'}</CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
             Historical price data

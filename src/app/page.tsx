@@ -14,9 +14,7 @@ async function TokenTable({ searchParams }: { searchParams: PageProps['searchPar
   const page = parseInt(params.page || '1', 10);
   const pageSize = parseInt(params.pageSize || '5', 10);
   const search = params.search || '';
-
   const response = await fetchTokens({ page, pageSize, search });
-
   return (
     <DataTable 
       data={response.data} 

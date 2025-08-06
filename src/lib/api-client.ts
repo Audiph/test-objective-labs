@@ -53,3 +53,32 @@ export async function fetchTokens(params: FetchTokensParams = {}): Promise<ApiRe
     throw error;
   }
 }
+
+const priceDataSchema = z.object({
+  timestamp: z.number(),
+  price: z.number(),
+});
+
+const tokenDetailResponseSchema = z.object({
+  token: tokenSchema,
+  priceData: z.array(priceDataSchema),
+});
+
+export type PriceData = z.infer<typeof priceDataSchema>;
+export type TokenDetailResponse = z.infer<typeof tokenDetailResponseSchema>;
+
+export async function fetchTokenByAddress(address: string): Promise<TokenDetailResponse> {
+  const url = new URL(`/api/tokens/${address}`, process.env.BASE_URL || 'http://localhost:3000');
+  
+  try {
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      throw new Error(`API request failed with status ${response.status}`);
+    }
+    const data = await response.json();
+    return tokenDetailResponseSchema.parse(data);
+  } catch (error) {
+    console.error('Error fetching token by address:', error);
+    throw error;
+  }
+}

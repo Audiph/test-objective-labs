@@ -22,7 +22,6 @@ import {
   VisibilityState,
 } from "@tanstack/react-table"
 import { toast } from "sonner"
-
 import { Badge } from "@/common/components/ui/badge"
 import { Button } from "@/common/components/ui/button"
 import { Checkbox } from "@/common/components/ui/checkbox"

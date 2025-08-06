@@ -9,10 +9,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/common/components/ui/card"
-import mockPriceData from "@/mockPriceData.json"
+import type { Token, PriceData } from '@/lib/api-client'
 
-export function SectionCards() {
-  const prices = mockPriceData.prices.map(p => p.price)
+interface SectionCardsProps {
+  token?: Token;
+  priceData?: PriceData[];
+}
+
+export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
+  const prices = (priceData || []).map(p => p.price)
+  if (prices.length === 0) {
+    return (
+      <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+        <Card className="@container/card">
+          <CardHeader>
+            <CardDescription>No price data available</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    )
+  }
   const currentPrice = prices[prices.length - 1]
   const previousPrice = prices[prices.length - 2]
   const priceChange = ((currentPrice - previousPrice) / previousPrice) * 100
@@ -27,7 +43,7 @@ export function SectionCards() {
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Current Price</CardDescription>
+          <CardDescription>{token ? `${token.symbol} Price` : 'Current Price'}</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
             ${currentPrice.toFixed(2)}
           </CardTitle>
