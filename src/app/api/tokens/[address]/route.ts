@@ -3,7 +3,7 @@ import tokensData from '@/data.json';
 import priceData from '@/mockPriceData.json';
 
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ address: string }> }
 ) {
   const { address } = await params;

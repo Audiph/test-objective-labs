@@ -1,4 +1,4 @@
-import ChartAreaInteractive from '@/common/components/lazy/chart-area-lazy';
+import { ChartAreaInteractive } from '@/common/components/lazy/chart-area-lazy';
 import { SectionCards } from '@/common/components/section-cards';
 import { fetchTokenByAddress } from '@/lib/api-client';
 import { notFound } from 'next/navigation';

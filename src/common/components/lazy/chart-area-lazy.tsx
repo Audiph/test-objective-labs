@@ -1,16 +1,23 @@
-"use client"
+'use client';
 
-import dynamic from 'next/dynamic'
-import { Skeleton } from '@/common/components/ui/skeleton'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/common/components/ui/card'
+import dynamic from 'next/dynamic';
+import { Skeleton } from '@/common/components/ui/skeleton';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/common/components/ui/card';
 
-const ChartAreaInteractive = dynamic(
-  () => import('@/common/components/chart-area-interactive').then(mod => mod.ChartAreaInteractive),
+export const ChartAreaInteractive = dynamic(
+  () =>
+    import('@/common/components/chart-area-interactive').then((mod) => mod.ChartAreaInteractive),
   {
     loading: () => <ChartLoadingSkeleton />,
-    ssr: false
+    ssr: false,
   }
-)
+);
 
 function ChartLoadingSkeleton() {
   return (
@@ -42,7 +49,5 @@ function ChartLoadingSkeleton() {
         <Skeleton className="aspect-auto h-[250px] w-full" />
       </CardContent>
     </Card>
-  )
+  );
 }
-
-export default ChartAreaInteractive
