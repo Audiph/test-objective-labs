@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import {
   IconChevronDown,
   IconChevronLeft,
@@ -13,18 +14,14 @@ import {
 } from "@tabler/icons-react"
 import {
   ColumnDef,
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   SortingState,
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table"
 import { toast } from "sonner"
-import { z } from "zod"
 
 import { Badge } from "@/common/components/ui/badge"
 import { Button } from "@/common/components/ui/button"
@@ -33,8 +30,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/common/components/ui/dropdown-menu"
 import { Input } from "@/common/components/ui/input"
@@ -54,17 +49,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/common/components/ui/table"
-
-export const tokenSchema = z.object({
-  address: z.string(),
-  chainId: z.number(),
-  name: z.string(),
-  symbol: z.string(),
-  decimals: z.number(),
-  logoURI: z.string(),
-})
-
-type Token = z.infer<typeof tokenSchema>
+import type { Token, PaginationInfo } from "@/lib/api-client"
+import Image from "next/image"
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`
@@ -107,13 +93,15 @@ const columns: ColumnDef<Token>[] = [
     header: "",
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
-        <img
+        <Image
           src={row.original.logoURI}
           alt={row.original.symbol}
-          className="h-8 w-8 rounded-full"
+          className="rounded-full"
+          width={32}
+          height={32}
           onError={(e) => {
             const target = e.target as HTMLImageElement
-            target.src = "https://via.placeholder.com/32"
+            target.src = "/avatar.png"
           }}
         />
       </div>
@@ -194,19 +182,51 @@ const columns: ColumnDef<Token>[] = [
   },
 ]
 
-export function DataTable({ data }: { data: Token[] }) {
+interface DataTableProps {
+  data: Token[]
+  pagination: PaginationInfo
+  searchParams: {
+    page: number
+    pageSize: number
+    search: string
+  }
+}
+
+export function DataTable({ data, pagination, searchParams }: DataTableProps) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const currentSearchParams = useSearchParams()
   const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [pagination, setPagination] = React.useState({
-    pageIndex: 0,
-    pageSize: 10,
-  })
-  const [globalFilter, setGlobalFilter] = React.useState("")
+  const [searchValue, setSearchValue] = React.useState(searchParams.search)
+  const [isSearching, setIsSearching] = React.useState(false)
+
+  // Debounce search
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchValue !== searchParams.search) {
+        updateSearchParams({ search: searchValue, page: 1 })
+      }
+      setIsSearching(false)
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [searchValue])
+
+  const updateSearchParams = (updates: Partial<typeof searchParams>) => {
+    const params = new URLSearchParams(currentSearchParams.toString())
+    
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        params.set(key, value.toString())
+      } else {
+        params.delete(key)
+      }
+    })
+
+    router.push(`${pathname}?${params.toString()}`)
+  }
 
   const table = useReactTable({
     data,
@@ -215,22 +235,24 @@ export function DataTable({ data }: { data: Token[] }) {
       sorting,
       columnVisibility,
       rowSelection,
-      columnFilters,
-      pagination,
-      globalFilter,
     },
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    onPaginationChange: setPagination,
-    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    manualPagination: true,
+    pageCount: pagination.totalPages,
   })
+
+  const handlePageSizeChange = (value: string) => {
+    updateSearchParams({ pageSize: parseInt(value, 10), page: 1 })
+  }
+
+  const handlePageChange = (newPage: number) => {
+    updateSearchParams({ page: newPage })
+  }
 
   return (
     <div className="w-full flex-col justify-start gap-6">
@@ -238,10 +260,16 @@ export function DataTable({ data }: { data: Token[] }) {
         <div className="flex items-center gap-2">
           <Input
             placeholder="Search tokens..."
-            value={globalFilter ?? ""}
-            onChange={(event) => setGlobalFilter(event.target.value)}
+            value={searchValue}
+            onChange={(event) => {
+              setSearchValue(event.target.value)
+              setIsSearching(true)
+            }}
             className="h-8 w-[150px] lg:w-[250px]"
           />
+          {isSearching && (
+            <div className="text-xs text-muted-foreground">Searching...</div>
+          )}
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -331,7 +359,7 @@ export function DataTable({ data }: { data: Token[] }) {
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
             {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+            {pagination.totalItems} row(s) selected.
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
@@ -339,18 +367,14 @@ export function DataTable({ data }: { data: Token[] }) {
                 Rows per page
               </Label>
               <Select
-                value={`${table.getState().pagination.pageSize}`}
-                onValueChange={(value) => {
-                  table.setPageSize(Number(value))
-                }}
+                value={`${pagination.pageSize}`}
+                onValueChange={handlePageSizeChange}
               >
                 <SelectTrigger size="sm" className="w-20" id="rows-per-page">
-                  <SelectValue
-                    placeholder={table.getState().pagination.pageSize}
-                  />
+                  <SelectValue placeholder={pagination.pageSize} />
                 </SelectTrigger>
                 <SelectContent side="top">
-                  {[10, 20, 30, 40, 50].map((pageSize) => (
+                  {[5, 10, 20].map((pageSize) => (
                     <SelectItem key={pageSize} value={`${pageSize}`}>
                       {pageSize}
                     </SelectItem>
@@ -359,15 +383,14 @@ export function DataTable({ data }: { data: Token[] }) {
               </Select>
             </div>
             <div className="flex w-fit items-center justify-center text-sm font-medium">
-              Page {table.getState().pagination.pageIndex + 1} of{" "}
-              {table.getPageCount()}
+              Page {pagination.currentPage} of {pagination.totalPages}
             </div>
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button
                 variant="outline"
                 className="hidden h-8 w-8 p-0 lg:flex"
-                onClick={() => table.setPageIndex(0)}
-                disabled={!table.getCanPreviousPage()}
+                onClick={() => handlePageChange(1)}
+                disabled={!pagination.hasPreviousPage}
               >
                 <span className="sr-only">Go to first page</span>
                 <IconChevronsLeft />
@@ -376,8 +399,8 @@ export function DataTable({ data }: { data: Token[] }) {
                 variant="outline"
                 className="size-8"
                 size="icon"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
+                onClick={() => handlePageChange(pagination.currentPage - 1)}
+                disabled={!pagination.hasPreviousPage}
               >
                 <span className="sr-only">Go to previous page</span>
                 <IconChevronLeft />
@@ -386,8 +409,8 @@ export function DataTable({ data }: { data: Token[] }) {
                 variant="outline"
                 className="size-8"
                 size="icon"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
+                onClick={() => handlePageChange(pagination.currentPage + 1)}
+                disabled={!pagination.hasNextPage}
               >
                 <span className="sr-only">Go to next page</span>
                 <IconChevronRight />
@@ -396,8 +419,8 @@ export function DataTable({ data }: { data: Token[] }) {
                 variant="outline"
                 className="hidden size-8 lg:flex"
                 size="icon"
-                onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-                disabled={!table.getCanNextPage()}
+                onClick={() => handlePageChange(pagination.totalPages)}
+                disabled={!pagination.hasNextPage}
               >
                 <span className="sr-only">Go to last page</span>
                 <IconChevronsRight />
