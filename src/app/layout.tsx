@@ -4,6 +4,7 @@ import './globals.css';
 import { SidebarInset, SidebarProvider } from '@/common/components/ui/sidebar';
 import { AppSidebar } from '@/common/components/app-sidebar';
 import { SiteHeader } from '@/common/components/site-header';
+import { ToastProvider } from '@/common/components/lazy/toast-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -42,6 +43,7 @@ export default function RootLayout({
             {children}
           </SidebarInset>
         </SidebarProvider>
+        <ToastProvider />
       </body>
     </html>
   );

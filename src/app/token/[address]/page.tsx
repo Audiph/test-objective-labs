@@ -1,4 +1,4 @@
-import { ChartAreaInteractive } from '@/common/components/chart-area-interactive';
+import ChartAreaInteractive from '@/common/components/lazy/chart-area-lazy';
 import { SectionCards } from '@/common/components/section-cards';
 import { fetchTokenByAddress } from '@/lib/api-client';
 import { notFound } from 'next/navigation';
@@ -11,7 +11,6 @@ interface TokenPageProps {
 
 export default async function Token({ params }: TokenPageProps) {
   const { address } = await params;
-  
   let tokenData;
   try {
     tokenData = await fetchTokenByAddress(address);
@@ -19,7 +18,6 @@ export default async function Token({ params }: TokenPageProps) {
     console.error('Failed to fetch token:', error);
     notFound();
   }
-
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">

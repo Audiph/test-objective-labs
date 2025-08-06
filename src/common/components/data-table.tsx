@@ -3,14 +3,12 @@
 import * as React from "react"
 import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import {
-  IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
   IconChevronsLeft,
   IconChevronsRight,
   IconCopy,
   IconExternalLink,
-  IconLayoutColumns,
 } from "@tabler/icons-react"
 import {
   ColumnDef,
@@ -25,12 +23,7 @@ import { toast } from "sonner"
 import { Badge } from "@/common/components/ui/badge"
 import { Button } from "@/common/components/ui/button"
 import { Checkbox } from "@/common/components/ui/checkbox"
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/common/components/ui/dropdown-menu"
+import { ColumnVisibilityDropdown } from '@/common/components/lazy/column-visibility-dropdown'
 import { Input } from "@/common/components/ui/input"
 import { Label } from "@/common/components/ui/label"
 import {
@@ -270,39 +263,7 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
             <div className="text-xs text-muted-foreground">Searching...</div>
           )}
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <IconLayoutColumns />
-              <span className="hidden lg:inline">Customize Columns</span>
-              <span className="lg:hidden">Columns</span>
-              <IconChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            {table
-              .getAllColumns()
-              .filter(
-                (column) =>
-                  typeof column.accessorFn !== "undefined" &&
-                  column.getCanHide()
-              )
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                )
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <ColumnVisibilityDropdown table={table} />
       </div>
       <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">
         <div className="overflow-hidden rounded-lg border">
@@ -387,7 +348,7 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
             <div className="ml-auto flex items-center gap-2 lg:ml-0">
               <Button
                 variant="outline"
-                className="hidden h-8 w-8 p-0 lg:flex"
+                className="hidden h-8 w-8 p-0 lg:flex hover:text-white"
                 onClick={() => handlePageChange(1)}
                 disabled={!pagination.hasPreviousPage}
               >
@@ -396,7 +357,7 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
               </Button>
               <Button
                 variant="outline"
-                className="size-8"
+                className="size-8 hover:text-white"
                 size="icon"
                 onClick={() => handlePageChange(pagination.currentPage - 1)}
                 disabled={!pagination.hasPreviousPage}
@@ -406,7 +367,7 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
               </Button>
               <Button
                 variant="outline"
-                className="size-8"
+                className="size-8 hover:text-white"
                 size="icon"
                 onClick={() => handlePageChange(pagination.currentPage + 1)}
                 disabled={!pagination.hasNextPage}
@@ -416,7 +377,7 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
               </Button>
               <Button
                 variant="outline"
-                className="hidden size-8 lg:flex"
+                className="hidden size-8 lg:flex hover:text-white"
                 size="icon"
                 onClick={() => handlePageChange(pagination.totalPages)}
                 disabled={!pagination.hasNextPage}
