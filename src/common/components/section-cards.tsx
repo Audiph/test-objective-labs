@@ -9,92 +9,106 @@ import {
   CardHeader,
   CardTitle,
 } from "@/common/components/ui/card"
+import mockPriceData from "@/mockPriceData.json"
 
 export function SectionCards() {
+  const prices = mockPriceData.prices.map(p => p.price)
+  const currentPrice = prices[prices.length - 1]
+  const previousPrice = prices[prices.length - 2]
+  const priceChange = ((currentPrice - previousPrice) / previousPrice) * 100
+  const isUp = priceChange >= 0
+  
+  const highPrice = Math.max(...prices)
+  const lowPrice = Math.min(...prices)
+  const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length
+  const volatility = ((highPrice - lowPrice) / avgPrice) * 100
+
   return (
     <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
+          <CardDescription>Current Price</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
+            ${currentPrice.toFixed(2)}
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
+              {isUp ? <IconTrendingUp /> : <IconTrendingDown />}
+              {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month <IconTrendingUp className="size-4" />
+            {isUp ? 'Trending up' : 'Trending down'} {isUp ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
           </div>
           <div className="text-muted-foreground">
-            Visitors for the last 6 months
+            Previous: ${previousPrice.toFixed(2)}
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>New Customers</CardDescription>
+          <CardDescription>24h High</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
+            ${highPrice.toFixed(2)}
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingUp />
+              Peak
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Session high <IconTrendingUp className="size-4" />
+          </div>
+          <div className="text-muted-foreground">
+            {((highPrice - currentPrice) / currentPrice * 100).toFixed(2)}% above current
+          </div>
+        </CardFooter>
+      </Card>
+      <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>24h Low</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+            ${lowPrice.toFixed(2)}
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
               <IconTrendingDown />
-              -20%
+              Floor
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period <IconTrendingDown className="size-4" />
+            Session low <IconTrendingDown className="size-4" />
           </div>
           <div className="text-muted-foreground">
-            Acquisition needs attention
+            {((currentPrice - lowPrice) / lowPrice * 100).toFixed(2)}% above floor
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
+          <CardDescription>Volatility</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+            {volatility.toFixed(2)}%
           </CardTitle>
           <CardAction>
             <Badge variant="outline">
-              <IconTrendingUp />
-              +12.5%
+              {volatility > 5 ? <IconTrendingUp /> : <IconTrendingDown />}
+              {volatility > 5 ? 'High' : 'Low'}
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention <IconTrendingUp className="size-4" />
+            Price range variance {volatility > 5 ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
           </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
-        </CardFooter>
-      </Card>
-      <Card className="@container/card">
-        <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
-          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
-          </CardTitle>
-          <CardAction>
-            <Badge variant="outline">
-              <IconTrendingUp />
-              +4.5%
-            </Badge>
-          </CardAction>
-        </CardHeader>
-        <CardFooter className="flex-col items-start gap-1.5 text-sm">
-          <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase <IconTrendingUp className="size-4" />
-          </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
+          <div className="text-muted-foreground">Avg: ${avgPrice.toFixed(2)}</div>
         </CardFooter>
       </Card>
     </div>
