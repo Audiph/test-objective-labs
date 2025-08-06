@@ -2,12 +2,8 @@
 
 import * as React from 'react';
 import {
-  IconCamera,
   IconChartBar,
-  IconFileAi,
-  IconFileDescription,
   IconHelp,
-  IconInnerShadowTop,
   IconSearch,
   IconSettings,
 } from '@tabler/icons-react';

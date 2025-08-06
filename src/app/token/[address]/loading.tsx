@@ -13,9 +13,7 @@ export default function Loading() {
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          {/* Section Cards Skeleton - 4 metric cards */}
           <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
-            {/* Current Price Card Skeleton */}
             <Card className="@container/card">
               <CardHeader>
                 <CardDescription>
@@ -38,8 +36,6 @@ export default function Loading() {
                 </div>
               </CardFooter>
             </Card>
-
-            {/* 24h High Card Skeleton */}
             <Card className="@container/card">
               <CardHeader>
                 <CardDescription>
@@ -62,8 +58,6 @@ export default function Loading() {
                 </div>
               </CardFooter>
             </Card>
-
-            {/* 24h Low Card Skeleton */}
             <Card className="@container/card">
               <CardHeader>
                 <CardDescription>
@@ -86,8 +80,6 @@ export default function Loading() {
                 </div>
               </CardFooter>
             </Card>
-
-            {/* Volatility Card Skeleton */}
             <Card className="@container/card">
               <CardHeader>
                 <CardDescription>
@@ -111,8 +103,6 @@ export default function Loading() {
               </CardFooter>
             </Card>
           </div>
-
-          {/* Chart Area Skeleton */}
           <div className="px-4 lg:px-6">
             <Card className="@container/card">
               <CardHeader>
@@ -128,20 +118,17 @@ export default function Loading() {
                   </span>
                 </CardDescription>
                 <div className="col-start-2 row-span-2 row-start-1 self-start justify-self-end">
-                  {/* Toggle Group Skeleton for desktop */}
                   <div className="hidden @[767px]/card:flex gap-1">
                     <Skeleton className="h-8 w-20" />
                     <Skeleton className="h-8 w-16" />
                     <Skeleton className="h-8 w-16" />
                   </div>
-                  {/* Select Skeleton for mobile */}
                   <div className="@[767px]/card:hidden">
                     <Skeleton className="h-8 w-40" />
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-                {/* Chart container skeleton */}
                 <Skeleton className="aspect-auto h-[250px] w-full" />
               </CardContent>
             </Card>
