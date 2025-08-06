@@ -1,13 +1,6 @@
 import { DataTable } from '@/common/components/data-table';
 import { fetchTokens } from '@/lib/api-client';
-
-interface PageProps {
-  searchParams: Promise<{
-    page?: string;
-    pageSize?: string;
-    search?: string;
-  }>;
-}
+import type { PageProps } from '@/common/models/pages';
 
 export const revalidate = 3600;
 

@@ -5,22 +5,11 @@ import * as RechartsPrimitive from "recharts"
 
 import { cn } from "@/common/lib/utils"
 
+import type { ChartConfig, ChartContextProps } from '@/common/models/ui-context';
+export { type ChartConfig } from '@/common/models/ui-context';
+
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const
-
-export type ChartConfig = {
-  [k in string]: {
-    label?: React.ReactNode
-    icon?: React.ComponentType
-  } & (
-    | { color?: string; theme?: never }
-    | { color?: never; theme: Record<keyof typeof THEMES, string> }
-  )
-}
-
-type ChartContextProps = {
-  config: ChartConfig
-}
 
 const ChartContext = React.createContext<ChartContextProps | null>(null)
 

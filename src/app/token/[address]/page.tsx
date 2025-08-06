@@ -2,12 +2,7 @@ import { ChartAreaInteractive } from '@/common/components/lazy/chart-area-lazy';
 import { SectionCards } from '@/common/components/section-cards';
 import { fetchTokenByAddress, fetchTokens } from '@/lib/api-client';
 import { notFound } from 'next/navigation';
-
-interface TokenPageProps {
-  params: Promise<{
-    address: string;
-  }>;
-}
+import type { TokenPageProps } from '@/common/models/pages';
 
 export const revalidate = 3600;
 

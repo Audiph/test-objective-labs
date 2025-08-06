@@ -41,7 +41,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/common/components/ui/table"
-import type { Token, PaginationInfo } from "@/lib/api-client"
+import type { Token } from "@/lib/api-client"
 import Image from "next/image"
 
 function truncateAddress(address: string) {
@@ -174,15 +174,7 @@ const columns: ColumnDef<Token>[] = [
   },
 ]
 
-interface DataTableProps {
-  data: Token[]
-  pagination: PaginationInfo
-  searchParams: {
-    page: number
-    pageSize: number
-    search: string
-  }
-}
+import type { DataTableProps } from '@/common/models/components';
 
 export function DataTable({ data, pagination, searchParams }: DataTableProps) {
   const router = useRouter()
@@ -194,7 +186,6 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
   const [searchValue, setSearchValue] = React.useState(searchParams.search)
   const [isSearching, setIsSearching] = React.useState(false)
 
-  // Debounce search
   React.useEffect(() => {
     const timer = setTimeout(() => {
       if (searchValue !== searchParams.search) {
@@ -208,7 +199,6 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
 
   const updateSearchParams = (updates: Partial<typeof searchParams>) => {
     const params = new URLSearchParams(currentSearchParams.toString())
-    
     Object.entries(updates).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
         params.set(key, value.toString())
@@ -216,7 +206,6 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
         params.delete(key)
       }
     })
-
     router.push(`${pathname}?${params.toString()}`)
   }
 

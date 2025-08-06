@@ -1,37 +1,12 @@
-import { z } from 'zod';
+import {
+  apiResponseSchema,
+  tokenDetailResponseSchema,
+  type ApiResponse,
+  type TokenDetailResponse,
+  type FetchTokensParams
+} from '@/common/models/api';
 
-const tokenSchema = z.object({
-  address: z.string(),
-  chainId: z.number(),
-  name: z.string(),
-  symbol: z.string(),
-  decimals: z.number(),
-  logoURI: z.string(),
-});
-
-const paginationSchema = z.object({
-  currentPage: z.number(),
-  pageSize: z.number(),
-  totalItems: z.number(),
-  totalPages: z.number(),
-  hasNextPage: z.boolean(),
-  hasPreviousPage: z.boolean(),
-});
-
-const apiResponseSchema = z.object({
-  data: z.array(tokenSchema),
-  pagination: paginationSchema,
-});
-
-export type Token = z.infer<typeof tokenSchema>;
-export type PaginationInfo = z.infer<typeof paginationSchema>;
-export type ApiResponse = z.infer<typeof apiResponseSchema>;
-
-interface FetchTokensParams {
-  page?: number;
-  pageSize?: number;
-  search?: string;
-}
+export type { Token, PaginationInfo, ApiResponse, PriceData, TokenDetailResponse } from '@/common/models/api';
 
 export async function fetchTokens(params: FetchTokensParams = {}): Promise<ApiResponse> {
   const { page = 1, pageSize = 5, search = '' } = params;
@@ -54,18 +29,6 @@ export async function fetchTokens(params: FetchTokensParams = {}): Promise<ApiRe
   }
 }
 
-const priceDataSchema = z.object({
-  timestamp: z.number(),
-  price: z.number(),
-});
-
-const tokenDetailResponseSchema = z.object({
-  token: tokenSchema,
-  priceData: z.array(priceDataSchema),
-});
-
-export type PriceData = z.infer<typeof priceDataSchema>;
-export type TokenDetailResponse = z.infer<typeof tokenDetailResponseSchema>;
 
 export async function fetchTokenByAddress(address: string): Promise<TokenDetailResponse> {
   const url = new URL(`/api/tokens/${address}`, process.env.BASE_URL || 'http://localhost:3000');

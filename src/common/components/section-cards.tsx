@@ -9,12 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/common/components/ui/card"
-import type { Token, PriceData } from '@/lib/api-client'
-
-interface SectionCardsProps {
-  token?: Token;
-  priceData?: PriceData[];
-}
+import type { SectionCardsProps } from '@/common/models/components';
 
 export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
   const prices = (priceData || []).map(p => p.price)

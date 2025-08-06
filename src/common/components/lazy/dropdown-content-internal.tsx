@@ -8,10 +8,7 @@ import {
   DropdownMenuTrigger,
 } from '@/common/components/ui/dropdown-menu'
 
-interface DropdownContentInternalProps {
-  table: any
-  children: React.ReactNode
-}
+import type { DropdownContentInternalProps } from '@/common/models/components';
 
 export function DropdownContentInternal({ table, children }: DropdownContentInternalProps) {
   return (

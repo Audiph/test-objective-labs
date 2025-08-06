@@ -29,14 +29,9 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/common/components/ui/toggle-group"
-import type { Token, PriceData } from '@/lib/api-client'
+import type { ChartAreaInteractiveProps } from '@/common/models/components';
 
 export const description = "An interactive price chart"
-
-interface ChartAreaInteractiveProps {
-  token?: Token;
-  priceData?: PriceData[];
-}
 
 const chartConfig = {
   price: {
