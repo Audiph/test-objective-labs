@@ -19,41 +19,28 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import { toast } from 'sonner'
-import { Badge } from '@/common/components/ui/badge'
-import { Button } from '@/common/components/ui/button'
-import { Checkbox } from '@/common/components/ui/checkbox'
-import { ColumnVisibilityDropdown } from '@/common/components/lazy/column-visibility-dropdown'
-import { Input } from '@/common/components/ui/input'
-import { Label } from '@/common/components/ui/label'
+import { Badge, Button, Checkbox } from '@/common/components/ui'
+import { ColumnVisibilityDropdown } from '@/common/components/lazy'
 import {
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select'
-import {
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/common/components/ui/table'
-import type { Token } from '@/lib/api-client'
+} from '@/common/components/ui'
 import Image from 'next/image'
 import type { DataTableProps } from '@/common/models/components'
 import Link from 'next/link'
-
-function truncateAddress(address: string) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
-}
-
-function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text)
-  toast.success('Address copied to clipboard')
-}
+import { Token } from '../models'
+import { truncateAddress, copyToClipboard } from '@/common/utils'
 
 const columns: ColumnDef<Token>[] = [
   {
@@ -177,6 +164,21 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
   const [searchValue, setSearchValue] = React.useState(searchParams.search)
   const [isSearching, setIsSearching] = React.useState(false)
 
+  const updateSearchParams = React.useCallback(
+    (updates: Partial<typeof searchParams>) => {
+      const params = new URLSearchParams(currentSearchParams.toString())
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value !== undefined && value !== null && value !== '') {
+          params.set(key, value.toString())
+        } else {
+          params.delete(key)
+        }
+      })
+      router.push(`${pathname}?${params.toString()}`)
+    },
+    [currentSearchParams, pathname, router]
+  )
+
   React.useEffect(() => {
     const timer = setTimeout(() => {
       if (searchValue !== searchParams.search) {
@@ -186,19 +188,7 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
     }, 500)
 
     return () => clearTimeout(timer)
-  }, [searchValue])
-
-  const updateSearchParams = (updates: Partial<typeof searchParams>) => {
-    const params = new URLSearchParams(currentSearchParams.toString())
-    Object.entries(updates).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== '') {
-        params.set(key, value.toString())
-      } else {
-        params.delete(key)
-      }
-    })
-    router.push(`${pathname}?${params.toString()}`)
-  }
+  }, [searchValue, searchParams.search, updateSearchParams])
 
   const table = useReactTable({
     data,

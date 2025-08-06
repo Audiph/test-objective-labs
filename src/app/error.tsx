@@ -3,7 +3,7 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Button } from '@/common/components/ui/button'
+import { Button } from '@/common/components/ui'
 
 export default function Error({
   error,

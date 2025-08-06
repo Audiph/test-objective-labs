@@ -1,12 +1,12 @@
-import { Skeleton } from '@/common/components/ui/skeleton'
 import {
+  Skeleton,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/common/components/ui/card'
+} from '@/common/components/ui'
 
 export default function Loading() {
   return (

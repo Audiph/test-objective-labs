@@ -6,7 +6,6 @@ import {
   IconDashboard,
   IconHelp,
   IconKey,
-  IconKeyOff,
   IconSearch,
   IconSettings,
 } from '@tabler/icons-react'
@@ -22,7 +21,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/common/components/ui/sidebar'
+} from '@/common/components/ui'
 import Link from 'next/link'
 import Image from 'next/image'
 

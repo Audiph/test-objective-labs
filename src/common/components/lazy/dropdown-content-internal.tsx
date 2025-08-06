@@ -6,8 +6,9 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from '@/common/components/ui/dropdown-menu'
-
+} from '@/common/components/ui'
+import type { Column } from '@tanstack/react-table'
+import type { Token } from '@/common/models/api'
 import type { DropdownContentInternalProps } from '@/common/models/components'
 
 export function DropdownContentInternal({ table, children }: DropdownContentInternalProps) {
@@ -17,8 +18,11 @@ export function DropdownContentInternal({ table, children }: DropdownContentInte
       <DropdownMenuContent align="end" className="w-56">
         {table
           .getAllColumns()
-          .filter((column: any) => typeof column.accessorFn !== 'undefined' && column.getCanHide())
-          .map((column: any) => {
+          .filter(
+            (column: Column<Token>) =>
+              typeof column.accessorFn !== 'undefined' && column.getCanHide()
+          )
+          .map((column: Column<Token>) => {
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}

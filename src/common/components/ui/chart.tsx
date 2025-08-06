@@ -3,7 +3,7 @@
 import * as React from 'react'
 import * as RechartsPrimitive from 'recharts'
 
-import { cn } from '@/common/lib/utils'
+import { cn } from '@/common/utils'
 
 import type { ChartConfig, ChartContextProps } from '@/common/models/ui-context'
 export { type ChartConfig } from '@/common/models/ui-context'

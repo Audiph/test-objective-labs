@@ -3,7 +3,6 @@ export const API_DETAIL_DELAY_MS = 100
 export const DEFAULT_PAGE_SIZE = 5
 export const STATIC_GENERATION_PAGE_SIZE = 100
 export const DEFAULT_PORT = 3000
-export const ISR_REVALIDATE_SECONDS = 3600
 export const TIMESTAMP_TO_MS_MULTIPLIER = 1000
 export const CHART_Y_AXIS_PADDING_RATIO = 0.1
 export const CHART_FILTER_LAST_THREE = 3

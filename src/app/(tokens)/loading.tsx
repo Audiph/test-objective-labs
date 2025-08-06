@@ -1,12 +1,12 @@
-import { Skeleton } from '@/common/components/ui/skeleton'
 import {
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/common/components/ui/table'
+} from '@/common/components/ui'
 
 export default function Loading() {
   return (

@@ -8,8 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/common/components/ui/dropdown-menu'
-import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -17,7 +15,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/common/components/ui/sidebar'
+} from '@/common/components/ui'
 
 export function NavDocuments({
   items,

@@ -1,14 +1,14 @@
 import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 
-import { Badge } from '@/common/components/ui/badge'
 import {
+  Badge,
   Card,
   CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/common/components/ui/card'
+} from '@/common/components/ui'
 import type { SectionCardsProps } from '@/common/models/components'
 
 export function SectionCards({ token, priceData }: SectionCardsProps = {}) {

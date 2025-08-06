@@ -1,18 +1,17 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Skeleton } from '@/common/components/ui/skeleton'
 import {
+  Skeleton,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from '@/common/components/ui/card'
+} from '@/common/components/ui'
 
 export const ChartAreaInteractive = dynamic(
-  () =>
-    import('@/common/components/chart-area-interactive').then((mod) => mod.ChartAreaInteractive),
+  () => import('@/common/components').then((mod) => mod.ChartAreaInteractive),
   {
     loading: () => <ChartLoadingSkeleton />,
     ssr: false,

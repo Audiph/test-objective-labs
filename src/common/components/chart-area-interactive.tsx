@@ -9,7 +9,7 @@ import {
   CHART_FILTER_LAST_FIVE,
 } from '@/common/constants'
 
-import { useIsMobile } from '@/common/hooks/use-mobile'
+import { useIsMobile } from '@/common/hooks'
 import {
   Card,
   CardAction,
@@ -17,21 +17,18 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/common/components/ui/card'
-import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from '@/common/components/ui/chart'
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/common/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/common/components/ui/toggle-group'
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@/common/components/ui'
 import type { ChartAreaInteractiveProps } from '@/common/models/components'
 
 export const description = 'An interactive price chart'
@@ -68,14 +65,22 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
       return chartData
     }
 
-    const dataPoints = timeRange === '3' ? CHART_FILTER_LAST_THREE : timeRange === '5' ? CHART_FILTER_LAST_FIVE : chartData.length
+    const dataPoints =
+      timeRange === '3'
+        ? CHART_FILTER_LAST_THREE
+        : timeRange === '5'
+          ? CHART_FILTER_LAST_FIVE
+          : chartData.length
     return chartData.slice(-dataPoints)
   }, [chartData, timeRange])
 
   const minPrice = Math.min(...filteredData.map((d) => d.price))
   const maxPrice = Math.max(...filteredData.map((d) => d.price))
   const priceRange = maxPrice - minPrice
-  const yAxisDomain = [minPrice - priceRange * CHART_Y_AXIS_PADDING_RATIO, maxPrice + priceRange * CHART_Y_AXIS_PADDING_RATIO]
+  const yAxisDomain = [
+    minPrice - priceRange * CHART_Y_AXIS_PADDING_RATIO,
+    maxPrice + priceRange * CHART_Y_AXIS_PADDING_RATIO,
+  ]
 
   return (
     <Card className="@container/card">

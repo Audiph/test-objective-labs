@@ -1,9 +1,9 @@
-import { DataTable } from '@/common/components/data-table'
-import { fetchTokens } from '@/lib/api-client'
+import { DataTable } from '@/common/components'
+import { fetchTokens } from '@/common/api-clients'
 import type { PageProps } from '@/common/models/pages'
-import { ISR_REVALIDATE_SECONDS, DEFAULT_PAGE_SIZE } from '@/common/constants'
+import { DEFAULT_PAGE_SIZE } from '@/common/constants'
 
-export const revalidate = ISR_REVALIDATE_SECONDS
+export const revalidate = 3600
 
 async function TokenTable({ searchParams }: { searchParams: PageProps['searchParams'] }) {
   const params = await searchParams

@@ -9,7 +9,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/common/components/ui/sidebar'
+} from '@/common/components/ui'
 
 export function NavSecondary({
   items,

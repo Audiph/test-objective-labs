@@ -1,11 +1,11 @@
-import { ChartAreaInteractive } from '@/common/components/lazy/chart-area-lazy'
-import { SectionCards } from '@/common/components/section-cards'
-import { fetchTokenByAddress, fetchTokens } from '@/lib/api-client'
+import { ChartAreaInteractive } from '@/common/components/lazy'
+import { SectionCards } from '@/common/components'
 import { notFound } from 'next/navigation'
 import type { TokenPageProps } from '@/common/models/pages'
-import { ISR_REVALIDATE_SECONDS, STATIC_GENERATION_PAGE_SIZE } from '@/common/constants'
+import { STATIC_GENERATION_PAGE_SIZE } from '@/common/constants'
+import { fetchTokenByAddress, fetchTokens } from '@/common/api-clients'
 
-export const revalidate = ISR_REVALIDATE_SECONDS
+export const revalidate = 3600
 
 export async function generateMetadata({ params }: TokenPageProps) {
   const { address } = await params

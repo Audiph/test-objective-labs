@@ -1,7 +1,7 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { Button } from '@/common/components/ui/button'
+import { Button } from '@/common/components/ui'
 import { IconLayoutColumns, IconChevronDown } from '@tabler/icons-react'
 import type { ColumnVisibilityDropdownProps } from '@/common/models/components'
 
