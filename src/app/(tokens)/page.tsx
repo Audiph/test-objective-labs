@@ -9,6 +9,8 @@ interface PageProps {
   }>;
 }
 
+export const revalidate = 3600;
+
 async function TokenTable({ searchParams }: { searchParams: PageProps['searchParams'] }) {
   const params = await searchParams;
   const page = parseInt(params.page || '1', 10);
