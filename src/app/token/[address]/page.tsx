@@ -11,6 +11,23 @@ interface TokenPageProps {
 
 export const revalidate = 3600;
 
+export async function generateMetadata({ params }: TokenPageProps) {
+  const { address } = await params;
+  try {
+    const tokenData = await fetchTokenByAddress(address);
+    return {
+      title: `${tokenData.token.name} (${tokenData.token.symbol}) - Token Details`,
+      description: `Details for ${tokenData.token.name} (${tokenData.token.symbol})`,
+    };
+  } catch (error) {
+    console.error('Failed to fetch token metadata:', error);
+    return {
+      title: 'Token Not Found',
+      description: 'The requested token could not be found.',
+    };
+  }
+}
+
 export async function generateStaticParams() {
   const tokens = await fetchTokens({ pageSize: 100 });
   return tokens.data.map(token => ({
