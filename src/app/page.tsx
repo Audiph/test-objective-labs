@@ -1,9 +1,9 @@
-import { AppSidebar } from '@/components/app-sidebar';
-import { ChartAreaInteractive } from '@/components/chart-area-interactive';
-import { DataTable } from '@/components/data-table';
-import { SectionCards } from '@/components/section-cards';
-import { SiteHeader } from '@/components/site-header';
-import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/common/components/app-sidebar';
+import { ChartAreaInteractive } from '@/common/components/chart-area-interactive';
+import { DataTable } from '@/common/components/data-table';
+import { SectionCards } from '@/common/components/section-cards';
+import { SiteHeader } from '@/common/components/site-header';
+import { SidebarInset, SidebarProvider } from '@/common/components/ui/sidebar';
 import Image from 'next/image';
 import data from '@/data.json';
 
