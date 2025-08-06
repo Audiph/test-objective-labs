@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import data from '@/data.json'
+import { API_SIMULATION_DELAY_MS, DEFAULT_PAGE_SIZE } from '@/common/constants'
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams
   const page = parseInt(searchParams.get('page') || '1', 10)
-  const pageSize = parseInt(searchParams.get('pageSize') || '5', 10)
+  const pageSize = parseInt(searchParams.get('pageSize') || DEFAULT_PAGE_SIZE.toString(), 10)
   const search = searchParams.get('search') || ''
-  await new Promise((resolve) => setTimeout(resolve, 300))
+  await new Promise((resolve) => setTimeout(resolve, API_SIMULATION_DELAY_MS))
   let filteredData = data
   if (search) {
     const searchLower = search.toLowerCase()

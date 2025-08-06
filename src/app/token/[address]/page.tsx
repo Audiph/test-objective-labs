@@ -3,8 +3,9 @@ import { SectionCards } from '@/common/components/section-cards'
 import { fetchTokenByAddress, fetchTokens } from '@/lib/api-client'
 import { notFound } from 'next/navigation'
 import type { TokenPageProps } from '@/common/models/pages'
+import { ISR_REVALIDATE_SECONDS, STATIC_GENERATION_PAGE_SIZE } from '@/common/constants'
 
-export const revalidate = 3600
+export const revalidate = ISR_REVALIDATE_SECONDS
 
 export async function generateMetadata({ params }: TokenPageProps) {
   const { address } = await params
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: TokenPageProps) {
 }
 
 export async function generateStaticParams() {
-  const tokens = await fetchTokens({ pageSize: 100 })
+  const tokens = await fetchTokens({ pageSize: STATIC_GENERATION_PAGE_SIZE })
   return tokens.data.map((token) => ({
     address: token.address,
   }))

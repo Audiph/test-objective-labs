@@ -2,6 +2,12 @@
 
 import * as React from 'react'
 import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
+import {
+  TIMESTAMP_TO_MS_MULTIPLIER,
+  CHART_Y_AXIS_PADDING_RATIO,
+  CHART_FILTER_LAST_THREE,
+  CHART_FILTER_LAST_FIVE,
+} from '@/common/constants'
 
 import { useIsMobile } from '@/common/hooks/use-mobile'
 import {
@@ -51,7 +57,7 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
     // Use passed priceData or fall back to empty array for backwards compatibility
     const prices = priceData || []
     return prices.map((item, index) => ({
-      date: new Date(item.timestamp * 1000).toISOString(),
+      date: new Date(item.timestamp * TIMESTAMP_TO_MS_MULTIPLIER).toISOString(),
       price: item.price,
       index: index,
     }))
@@ -62,14 +68,14 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
       return chartData
     }
 
-    const dataPoints = timeRange === '3' ? 3 : timeRange === '5' ? 5 : chartData.length
+    const dataPoints = timeRange === '3' ? CHART_FILTER_LAST_THREE : timeRange === '5' ? CHART_FILTER_LAST_FIVE : chartData.length
     return chartData.slice(-dataPoints)
   }, [chartData, timeRange])
 
   const minPrice = Math.min(...filteredData.map((d) => d.price))
   const maxPrice = Math.max(...filteredData.map((d) => d.price))
   const priceRange = maxPrice - minPrice
-  const yAxisDomain = [minPrice - priceRange * 0.1, maxPrice + priceRange * 0.1]
+  const yAxisDomain = [minPrice - priceRange * CHART_Y_AXIS_PADDING_RATIO, maxPrice + priceRange * CHART_Y_AXIS_PADDING_RATIO]
 
   return (
     <Card className="@container/card">

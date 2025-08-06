@@ -5,6 +5,7 @@ import {
   type TokenDetailResponse,
   type FetchTokensParams,
 } from '@/common/models/api'
+import { DEFAULT_PAGE_SIZE, DEFAULT_PORT } from '@/common/constants'
 
 export type {
   Token,
@@ -15,8 +16,8 @@ export type {
 } from '@/common/models/api'
 
 export async function fetchTokens(params: FetchTokensParams = {}): Promise<ApiResponse> {
-  const { page = 1, pageSize = 5, search = '' } = params
-  const url = new URL('/api/tokens', process.env.BASE_URL || 'http://localhost:3000')
+  const { page = 1, pageSize = DEFAULT_PAGE_SIZE, search = '' } = params
+  const url = new URL('/api/tokens', process.env.BASE_URL || `http://localhost:${DEFAULT_PORT}`)
   url.searchParams.set('page', page.toString())
   url.searchParams.set('pageSize', pageSize.toString())
   if (search) {
@@ -36,7 +37,7 @@ export async function fetchTokens(params: FetchTokensParams = {}): Promise<ApiRe
 }
 
 export async function fetchTokenByAddress(address: string): Promise<TokenDetailResponse> {
-  const url = new URL(`/api/tokens/${address}`, process.env.BASE_URL || 'http://localhost:3000')
+  const url = new URL(`/api/tokens/${address}`, process.env.BASE_URL || `http://localhost:${DEFAULT_PORT}`)
 
   try {
     const response = await fetch(url.toString())
