@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { useRouter, usePathname, useSearchParams } from "next/navigation"
+import * as React from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import {
   IconChevronLeft,
   IconChevronRight,
@@ -9,7 +9,7 @@ import {
   IconChevronsRight,
   IconCopy,
   IconExternalLink,
-} from "@tabler/icons-react"
+} from '@tabler/icons-react';
 import {
   ColumnDef,
   flexRender,
@@ -18,21 +18,21 @@ import {
   SortingState,
   useReactTable,
   VisibilityState,
-} from "@tanstack/react-table"
-import { toast } from "sonner"
-import { Badge } from "@/common/components/ui/badge"
-import { Button } from "@/common/components/ui/button"
-import { Checkbox } from "@/common/components/ui/checkbox"
-import { ColumnVisibilityDropdown } from '@/common/components/lazy/column-visibility-dropdown'
-import { Input } from "@/common/components/ui/input"
-import { Label } from "@/common/components/ui/label"
+} from '@tanstack/react-table';
+import { toast } from 'sonner';
+import { Badge } from '@/common/components/ui/badge';
+import { Button } from '@/common/components/ui/button';
+import { Checkbox } from '@/common/components/ui/checkbox';
+import { ColumnVisibilityDropdown } from '@/common/components/lazy/column-visibility-dropdown';
+import { Input } from '@/common/components/ui/input';
+import { Label } from '@/common/components/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/common/components/ui/select"
+} from '@/common/components/ui/select';
 import {
   Table,
   TableBody,
@@ -40,28 +40,30 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/common/components/ui/table"
-import type { Token } from "@/lib/api-client"
-import Image from "next/image"
+} from '@/common/components/ui/table';
+import type { Token } from '@/lib/api-client';
+import Image from 'next/image';
+import type { DataTableProps } from '@/common/models/components';
+import Link from 'next/link';
 
 function truncateAddress(address: string) {
-  return `${address.slice(0, 6)}...${address.slice(-4)}`
+  return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
 function copyToClipboard(text: string) {
-  navigator.clipboard.writeText(text)
-  toast.success("Address copied to clipboard")
+  navigator.clipboard.writeText(text);
+  toast.success('Address copied to clipboard');
 }
 
 const columns: ColumnDef<Token>[] = [
   {
-    id: "select",
+    id: 'select',
     header: ({ table }) => (
       <div className="flex items-center justify-center">
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
@@ -81,8 +83,8 @@ const columns: ColumnDef<Token>[] = [
     enableHiding: false,
   },
   {
-    id: "logo",
-    header: "",
+    id: 'logo',
+    header: '',
     cell: ({ row }) => (
       <div className="flex items-center justify-center">
         <Image
@@ -92,8 +94,8 @@ const columns: ColumnDef<Token>[] = [
           width={32}
           height={32}
           onError={(e) => {
-            const target = e.target as HTMLImageElement
-            target.src = "/avatar.png"
+            const target = e.target as HTMLImageElement;
+            target.src = '/avatar.png';
           }}
         />
       </div>
@@ -102,16 +104,18 @@ const columns: ColumnDef<Token>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: 'name',
+    header: 'Name',
     cell: ({ row }) => (
-      <div className="font-medium">{row.original.name}</div>
+      <Link href={`/token/${row.original.address}`} className="font-medium hover:underline">
+        {row.original.name}
+      </Link>
     ),
     enableHiding: false,
   },
   {
-    accessorKey: "symbol",
-    header: "Symbol",
+    accessorKey: 'symbol',
+    header: 'Symbol',
     cell: ({ row }) => (
       <Badge variant="outline" className="font-mono">
         {row.original.symbol}
@@ -119,8 +123,8 @@ const columns: ColumnDef<Token>[] = [
     ),
   },
   {
-    accessorKey: "address",
-    header: "Contract Address",
+    accessorKey: 'address',
+    header: 'Contract Address',
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <code className="text-xs text-muted-foreground">
@@ -134,12 +138,7 @@ const columns: ColumnDef<Token>[] = [
         >
           <IconCopy className="h-3 w-3" />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-6 w-6"
-          asChild
-        >
+        <Button variant="ghost" size="icon" className="h-6 w-6" asChild>
           <a
             href={`https://etherscan.io/address/${row.original.address}`}
             target="_blank"
@@ -152,62 +151,54 @@ const columns: ColumnDef<Token>[] = [
     ),
   },
   {
-    accessorKey: "chainId",
-    header: "Chain",
+    accessorKey: 'chainId',
+    header: 'Chain',
     cell: ({ row }) => {
-      const chainName = row.original.chainId === 1 ? "Ethereum" : `Chain ${row.original.chainId}`
-      return (
-        <Badge variant="secondary">
-          {chainName}
-        </Badge>
-      )
+      const chainName = row.original.chainId === 1 ? 'Ethereum' : `Chain ${row.original.chainId}`;
+      return <Badge variant="secondary">{chainName}</Badge>;
     },
   },
   {
-    accessorKey: "decimals",
-    header: "Decimals",
+    accessorKey: 'decimals',
+    header: 'Decimals',
     cell: ({ row }) => (
-      <div className="text-center text-muted-foreground">
-        {row.original.decimals}
-      </div>
+      <div className="text-center text-muted-foreground">{row.original.decimals}</div>
     ),
   },
-]
-
-import type { DataTableProps } from '@/common/models/components';
+];
 
 export function DataTable({ data, pagination, searchParams }: DataTableProps) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const currentSearchParams = useSearchParams()
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [searchValue, setSearchValue] = React.useState(searchParams.search)
-  const [isSearching, setIsSearching] = React.useState(false)
+  const router = useRouter();
+  const pathname = usePathname();
+  const currentSearchParams = useSearchParams();
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [searchValue, setSearchValue] = React.useState(searchParams.search);
+  const [isSearching, setIsSearching] = React.useState(false);
 
   React.useEffect(() => {
     const timer = setTimeout(() => {
       if (searchValue !== searchParams.search) {
-        updateSearchParams({ search: searchValue, page: 1 })
+        updateSearchParams({ search: searchValue, page: 1 });
       }
-      setIsSearching(false)
-    }, 500)
+      setIsSearching(false);
+    }, 500);
 
-    return () => clearTimeout(timer)
-  }, [searchValue])
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
   const updateSearchParams = (updates: Partial<typeof searchParams>) => {
-    const params = new URLSearchParams(currentSearchParams.toString())
+    const params = new URLSearchParams(currentSearchParams.toString());
     Object.entries(updates).forEach(([key, value]) => {
       if (value !== undefined && value !== null && value !== '') {
-        params.set(key, value.toString())
+        params.set(key, value.toString());
       } else {
-        params.delete(key)
+        params.delete(key);
       }
-    })
-    router.push(`${pathname}?${params.toString()}`)
-  }
+    });
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   const table = useReactTable({
     data,
@@ -225,15 +216,15 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
     getSortedRowModel: getSortedRowModel(),
     manualPagination: true,
     pageCount: pagination.totalPages,
-  })
+  });
 
   const handlePageSizeChange = (value: string) => {
-    updateSearchParams({ pageSize: parseInt(value, 10), page: 1 })
-  }
+    updateSearchParams({ pageSize: parseInt(value, 10), page: 1 });
+  };
 
   const handlePageChange = (newPage: number) => {
-    updateSearchParams({ page: newPage })
-  }
+    updateSearchParams({ page: newPage });
+  };
 
   return (
     <div className="w-full flex-col justify-start gap-6">
@@ -243,14 +234,12 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
             placeholder="Search tokens..."
             value={searchValue}
             onChange={(event) => {
-              setSearchValue(event.target.value)
-              setIsSearching(true)
+              setSearchValue(event.target.value);
+              setIsSearching(true);
             }}
             className="h-8 w-[150px] lg:w-[250px]"
           />
-          {isSearching && (
-            <div className="text-xs text-muted-foreground">Searching...</div>
-          )}
+          {isSearching && <div className="text-xs text-muted-foreground">Searching...</div>}
         </div>
         <ColumnVisibilityDropdown table={table} />
       </div>
@@ -265,12 +254,9 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
                       <TableHead key={header.id} colSpan={header.colSpan}>
                         {header.isPlaceholder
                           ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                          : flexRender(header.column.columnDef.header, header.getContext())}
                       </TableHead>
-                    )
+                    );
                   })}
                 </TableRow>
               ))}
@@ -278,26 +264,17 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -307,18 +284,15 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
         </div>
         <div className="flex items-center justify-between px-4">
           <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {pagination.totalItems} row(s) selected.
+            {table.getFilteredSelectedRowModel().rows.length} of {pagination.totalItems} row(s)
+            selected.
           </div>
           <div className="flex w-full items-center gap-8 lg:w-fit">
             <div className="hidden items-center gap-2 lg:flex">
               <Label htmlFor="rows-per-page" className="text-sm font-medium">
                 Rows per page
               </Label>
-              <Select
-                value={`${pagination.pageSize}`}
-                onValueChange={handlePageSizeChange}
-              >
+              <Select value={`${pagination.pageSize}`} onValueChange={handlePageSizeChange}>
                 <SelectTrigger size="sm" className="w-20" id="rows-per-page">
                   <SelectValue placeholder={pagination.pageSize} />
                 </SelectTrigger>
@@ -379,5 +353,5 @@ export function DataTable({ data, pagination, searchParams }: DataTableProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }

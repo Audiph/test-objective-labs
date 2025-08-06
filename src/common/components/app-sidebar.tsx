@@ -3,7 +3,10 @@
 import * as React from 'react';
 import {
   IconChartBar,
+  IconDashboard,
   IconHelp,
+  IconKey,
+  IconKeyOff,
   IconSearch,
   IconSettings,
 } from '@tabler/icons-react';
@@ -30,6 +33,16 @@ const data = {
     avatar: '/avatar.png',
   },
   navMain: [
+    {
+      title: 'Dashboard',
+      url: '#',
+      icon: IconDashboard,
+    },
+    {
+      title: 'Tokens',
+      url: '#',
+      icon: IconKey,
+    },
     {
       title: 'Analytics',
       url: '#',
