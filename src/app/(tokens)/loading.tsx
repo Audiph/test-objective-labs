@@ -1,4 +1,4 @@
-import { Skeleton } from '@/common/components/ui/skeleton';
+import { Skeleton } from '@/common/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -6,7 +6,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/common/components/ui/table';
+} from '@/common/components/ui/table'
 
 export default function Loading() {
   return (
@@ -14,7 +14,7 @@ export default function Loading() {
       <div className="@container/main flex flex-1 flex-col gap-2">
         <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
           <div className="w-full flex-col justify-start gap-6">
-            <div className="flex items-center justify-between px-4 lg:px-6 pb-4">
+            <div className="flex items-center justify-between px-4 pb-4 lg:px-6">
               <Skeleton className="h-8 w-[150px] lg:w-[250px]" />
               <Skeleton className="h-8 w-[120px] lg:w-[180px]" />
             </div>
@@ -24,10 +24,10 @@ export default function Loading() {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[50px]">
-                        <Skeleton className="h-4 w-4 mx-auto" />
+                        <Skeleton className="mx-auto h-4 w-4" />
                       </TableHead>
                       <TableHead className="w-[50px]">
-                        <Skeleton className="h-8 w-8 rounded-full mx-auto" />
+                        <Skeleton className="mx-auto h-8 w-8 rounded-full" />
                       </TableHead>
                       <TableHead>
                         <Skeleton className="h-4 w-12" />
@@ -50,10 +50,10 @@ export default function Loading() {
                     {Array.from({ length: 8 }).map((_, index) => (
                       <TableRow key={index}>
                         <TableCell>
-                          <Skeleton className="h-4 w-4 mx-auto" />
+                          <Skeleton className="mx-auto h-4 w-4" />
                         </TableCell>
                         <TableCell>
-                          <Skeleton className="h-8 w-8 rounded-full mx-auto" />
+                          <Skeleton className="mx-auto h-8 w-8 rounded-full" />
                         </TableCell>
                         <TableCell>
                           <Skeleton className="h-4 w-32" />
@@ -72,7 +72,7 @@ export default function Loading() {
                           <Skeleton className="h-6 w-20" />
                         </TableCell>
                         <TableCell>
-                          <Skeleton className="h-4 w-4 mx-auto" />
+                          <Skeleton className="mx-auto h-4 w-4" />
                         </TableCell>
                       </TableRow>
                     ))}
@@ -80,7 +80,7 @@ export default function Loading() {
                 </Table>
               </div>
               <div className="flex items-center justify-between px-4">
-                <Skeleton className="hidden lg:block h-4 w-32" />
+                <Skeleton className="hidden h-4 w-32 lg:block" />
                 <div className="flex w-full items-center gap-8 lg:w-fit">
                   <div className="hidden items-center gap-2 lg:flex">
                     <Skeleton className="h-4 w-24" />
@@ -88,10 +88,10 @@ export default function Loading() {
                   </div>
                   <Skeleton className="h-4 w-24" />
                   <div className="ml-auto flex items-center gap-2 lg:ml-0">
-                    <Skeleton className="hidden lg:block h-8 w-8" />
+                    <Skeleton className="hidden h-8 w-8 lg:block" />
                     <Skeleton className="h-8 w-8" />
                     <Skeleton className="h-8 w-8" />
-                    <Skeleton className="hidden lg:block h-8 w-8" />
+                    <Skeleton className="hidden h-8 w-8 lg:block" />
                   </div>
                 </div>
               </div>
@@ -100,5 +100,5 @@ export default function Loading() {
         </div>
       </div>
     </div>
-  );
+  )
 }

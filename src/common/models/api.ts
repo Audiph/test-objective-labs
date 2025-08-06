@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod'
 
 export const tokenSchema = z.object({
   address: z.string(),
@@ -7,7 +7,7 @@ export const tokenSchema = z.object({
   symbol: z.string(),
   decimals: z.number(),
   logoURI: z.string(),
-});
+})
 
 export const paginationSchema = z.object({
   currentPage: z.number(),
@@ -16,31 +16,31 @@ export const paginationSchema = z.object({
   totalPages: z.number(),
   hasNextPage: z.boolean(),
   hasPreviousPage: z.boolean(),
-});
+})
 
 export const apiResponseSchema = z.object({
   data: z.array(tokenSchema),
   pagination: paginationSchema,
-});
+})
 
 export const priceDataSchema = z.object({
   timestamp: z.number(),
   price: z.number(),
-});
+})
 
 export const tokenDetailResponseSchema = z.object({
   token: tokenSchema,
   priceData: z.array(priceDataSchema),
-});
+})
 
-export type Token = z.infer<typeof tokenSchema>;
-export type PaginationInfo = z.infer<typeof paginationSchema>;
-export type ApiResponse = z.infer<typeof apiResponseSchema>;
-export type PriceData = z.infer<typeof priceDataSchema>;
-export type TokenDetailResponse = z.infer<typeof tokenDetailResponseSchema>;
+export type Token = z.infer<typeof tokenSchema>
+export type PaginationInfo = z.infer<typeof paginationSchema>
+export type ApiResponse = z.infer<typeof apiResponseSchema>
+export type PriceData = z.infer<typeof priceDataSchema>
+export type TokenDetailResponse = z.infer<typeof tokenDetailResponseSchema>
 
 export interface FetchTokensParams {
-  page?: number;
-  pageSize?: number;
-  search?: string;
+  page?: number
+  pageSize?: number
+  search?: string
 }

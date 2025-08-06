@@ -1,6 +1,6 @@
-import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
+import { IconTrendingDown, IconTrendingUp } from '@tabler/icons-react'
 
-import { Badge } from "@/common/components/ui/badge"
+import { Badge } from '@/common/components/ui/badge'
 import {
   Card,
   CardAction,
@@ -8,11 +8,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card"
-import type { SectionCardsProps } from '@/common/models/components';
+} from '@/common/components/ui/card'
+import type { SectionCardsProps } from '@/common/models/components'
 
 export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
-  const prices = (priceData || []).map(p => p.price)
+  const prices = (priceData || []).map((p) => p.price)
   if (prices.length === 0) {
     return (
       <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
@@ -28,7 +28,7 @@ export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
   const previousPrice = prices[prices.length - 2]
   const priceChange = ((currentPrice - previousPrice) / previousPrice) * 100
   const isUp = priceChange >= 0
-  
+
   const highPrice = Math.max(...prices)
   const lowPrice = Math.min(...prices)
   const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length
@@ -45,17 +45,17 @@ export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
           <CardAction>
             <Badge variant="outline">
               {isUp ? <IconTrendingUp /> : <IconTrendingDown />}
-              {priceChange >= 0 ? '+' : ''}{priceChange.toFixed(2)}%
+              {priceChange >= 0 ? '+' : ''}
+              {priceChange.toFixed(2)}%
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            {isUp ? 'Trending up' : 'Trending down'} {isUp ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
+            {isUp ? 'Trending up' : 'Trending down'}{' '}
+            {isUp ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
           </div>
-          <div className="text-muted-foreground">
-            Previous: ${previousPrice.toFixed(2)}
-          </div>
+          <div className="text-muted-foreground">Previous: ${previousPrice.toFixed(2)}</div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
@@ -76,7 +76,7 @@ export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
             Session high <IconTrendingUp className="size-4" />
           </div>
           <div className="text-muted-foreground">
-            {((highPrice - currentPrice) / currentPrice * 100).toFixed(2)}% above current
+            {(((highPrice - currentPrice) / currentPrice) * 100).toFixed(2)}% above current
           </div>
         </CardFooter>
       </Card>
@@ -98,7 +98,7 @@ export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
             Session low <IconTrendingDown className="size-4" />
           </div>
           <div className="text-muted-foreground">
-            {((currentPrice - lowPrice) / lowPrice * 100).toFixed(2)}% above floor
+            {(((currentPrice - lowPrice) / lowPrice) * 100).toFixed(2)}% above floor
           </div>
         </CardFooter>
       </Card>
@@ -117,7 +117,12 @@ export function SectionCards({ token, priceData }: SectionCardsProps = {}) {
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Price range variance {volatility > 5 ? <IconTrendingUp className="size-4" /> : <IconTrendingDown className="size-4" />}
+            Price range variance{' '}
+            {volatility > 5 ? (
+              <IconTrendingUp className="size-4" />
+            ) : (
+              <IconTrendingDown className="size-4" />
+            )}
           </div>
           <div className="text-muted-foreground">Avg: ${avgPrice.toFixed(2)}</div>
         </CardFooter>

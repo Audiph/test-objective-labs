@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+import * as React from 'react'
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
-import { useIsMobile } from "@/common/hooks/use-mobile"
+import { useIsMobile } from '@/common/hooks/use-mobile'
 import {
   Card,
   CardAction,
@@ -11,48 +11,45 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card"
+} from '@/common/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/common/components/ui/chart"
+} from '@/common/components/ui/chart'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/common/components/ui/select"
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/common/components/ui/toggle-group"
-import type { ChartAreaInteractiveProps } from '@/common/models/components';
+} from '@/common/components/ui/select'
+import { ToggleGroup, ToggleGroupItem } from '@/common/components/ui/toggle-group'
+import type { ChartAreaInteractiveProps } from '@/common/models/components'
 
-export const description = "An interactive price chart"
+export const description = 'An interactive price chart'
 
 const chartConfig = {
   price: {
-    label: "Price",
-    color: "var(--primary)",
+    label: 'Price',
+    color: 'var(--primary)',
   },
 } satisfies ChartConfig
 
 export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveProps = {}) {
   const isMobile = useIsMobile()
-  const [timeRange, setTimeRange] = React.useState("all")
+  const [timeRange, setTimeRange] = React.useState('all')
 
   React.useEffect(() => {
     if (isMobile) {
-      setTimeRange("all")
+      setTimeRange('all')
     }
   }, [isMobile])
 
   const chartData = React.useMemo(() => {
     // Use passed priceData or fall back to empty array for backwards compatibility
-    const prices = priceData || [];
+    const prices = priceData || []
     return prices.map((item, index) => ({
       date: new Date(item.timestamp * 1000).toISOString(),
       price: item.price,
@@ -61,16 +58,16 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
   }, [priceData])
 
   const filteredData = React.useMemo(() => {
-    if (timeRange === "all") {
+    if (timeRange === 'all') {
       return chartData
     }
-    
-    const dataPoints = timeRange === "3" ? 3 : timeRange === "5" ? 5 : chartData.length
+
+    const dataPoints = timeRange === '3' ? 3 : timeRange === '5' ? 5 : chartData.length
     return chartData.slice(-dataPoints)
   }, [chartData, timeRange])
 
-  const minPrice = Math.min(...filteredData.map(d => d.price))
-  const maxPrice = Math.max(...filteredData.map(d => d.price))
+  const minPrice = Math.min(...filteredData.map((d) => d.price))
+  const maxPrice = Math.max(...filteredData.map((d) => d.price))
   const priceRange = maxPrice - minPrice
   const yAxisDomain = [minPrice - priceRange * 0.1, maxPrice + priceRange * 0.1]
 
@@ -79,9 +76,7 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
       <CardHeader>
         <CardTitle>{token ? `${token.symbol} Price History` : 'Price History'}</CardTitle>
         <CardDescription>
-          <span className="hidden @[540px]/card:block">
-            Historical price data
-          </span>
+          <span className="hidden @[540px]/card:block">Historical price data</span>
           <span className="@[540px]/card:hidden">Price data</span>
         </CardDescription>
         <CardAction>
@@ -119,23 +114,12 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
         </CardAction>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
           <AreaChart data={filteredData}>
             <defs>
               <linearGradient id="fillPrice" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-price)"
-                  stopOpacity={1.0}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-price)"
-                  stopOpacity={0.1}
-                />
+                <stop offset="5%" stopColor="var(--color-price)" stopOpacity={1.0} />
+                <stop offset="95%" stopColor="var(--color-price)" stopOpacity={0.1} />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} />
@@ -146,11 +130,11 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
               tickMargin={8}
               tickFormatter={(value) => {
                 const item = filteredData[value]
-                if (!item) return ""
+                if (!item) return ''
                 const date = new Date(item.date)
-                return date.toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
+                return date.toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
                 })
               }}
             />
@@ -166,13 +150,13 @@ export function ChartAreaInteractive({ token, priceData }: ChartAreaInteractiveP
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    const item = filteredData.find(d => d.index === value)
-                    if (!item) return ""
-                    return new Date(item.date).toLocaleString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
+                    const item = filteredData.find((d) => d.index === value)
+                    if (!item) return ''
+                    return new Date(item.date).toLocaleString('en-US', {
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
                     })
                   }}
                   formatter={(value) => `$${Number(value).toFixed(2)}`}

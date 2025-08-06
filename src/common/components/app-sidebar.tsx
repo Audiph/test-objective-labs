@@ -1,6 +1,6 @@
-'use client';
+'use client'
 
-import * as React from 'react';
+import * as React from 'react'
 import {
   IconChartBar,
   IconDashboard,
@@ -9,11 +9,11 @@ import {
   IconKeyOff,
   IconSearch,
   IconSettings,
-} from '@tabler/icons-react';
+} from '@tabler/icons-react'
 
-import { NavMain } from '@/common/components/nav-main';
-import { NavSecondary } from '@/common/components/nav-secondary';
-import { NavUser } from '@/common/components/nav-user';
+import { NavMain } from '@/common/components/nav-main'
+import { NavSecondary } from '@/common/components/nav-secondary'
+import { NavUser } from '@/common/components/nav-user'
 import {
   Sidebar,
   SidebarContent,
@@ -22,9 +22,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/common/components/ui/sidebar';
-import Link from 'next/link';
-import Image from 'next/image';
+} from '@/common/components/ui/sidebar'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const data = {
   user: {
@@ -66,7 +66,7 @@ const data = {
       icon: IconSearch,
     },
   ],
-};
+}
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -97,5 +97,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  );
+  )
 }

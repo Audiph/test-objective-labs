@@ -1,4 +1,4 @@
-import { Skeleton } from '@/common/components/ui/skeleton';
+import { Skeleton } from '@/common/components/ui/skeleton'
 import {
   Card,
   CardContent,
@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/common/components/ui/card';
+} from '@/common/components/ui/card'
 
 export default function Loading() {
   return (
@@ -118,7 +118,7 @@ export default function Loading() {
                   </span>
                 </CardDescription>
                 <div className="col-start-2 row-span-2 row-start-1 self-start justify-self-end">
-                  <div className="hidden @[767px]/card:flex gap-1">
+                  <div className="hidden gap-1 @[767px]/card:flex">
                     <Skeleton className="h-8 w-20" />
                     <Skeleton className="h-8 w-16" />
                     <Skeleton className="h-8 w-16" />
@@ -136,5 +136,5 @@ export default function Loading() {
         </div>
       </div>
     </div>
-  );
+  )
 }

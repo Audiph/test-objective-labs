@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
-import dynamic from 'next/dynamic';
-import { Skeleton } from '@/common/components/ui/skeleton';
+import dynamic from 'next/dynamic'
+import { Skeleton } from '@/common/components/ui/skeleton'
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardDescription,
-} from '@/common/components/ui/card';
+} from '@/common/components/ui/card'
 
 export const ChartAreaInteractive = dynamic(
   () =>
@@ -17,7 +17,7 @@ export const ChartAreaInteractive = dynamic(
     loading: () => <ChartLoadingSkeleton />,
     ssr: false,
   }
-);
+)
 
 function ChartLoadingSkeleton() {
   return (
@@ -26,16 +26,16 @@ function ChartLoadingSkeleton() {
         <CardTitle>
           <Skeleton className="h-5 w-32" />
         </CardTitle>
-        <CardDescription className="grid gap-1 grid-cols-2">
-          <span className="flex items-baseline gap-1 text-2xl font-bold tabular-nums leading-none">
+        <CardDescription className="grid grid-cols-2 gap-1">
+          <span className="flex items-baseline gap-1 text-2xl leading-none font-bold tabular-nums">
             <Skeleton className="h-8 w-24" />
-            <span className="text-sm font-normal text-muted-foreground">
+            <span className="text-muted-foreground text-sm font-normal">
               <Skeleton className="h-4 w-12" />
             </span>
           </span>
         </CardDescription>
         <div className="col-start-2 row-span-2 row-start-1 self-start justify-self-end">
-          <div className="hidden @[767px]/card:flex gap-1">
+          <div className="hidden gap-1 @[767px]/card:flex">
             <Skeleton className="h-8 w-20" />
             <Skeleton className="h-8 w-16" />
             <Skeleton className="h-8 w-16" />
@@ -49,5 +49,5 @@ function ChartLoadingSkeleton() {
         <Skeleton className="aspect-auto h-[250px] w-full" />
       </CardContent>
     </Card>
-  );
+  )
 }
